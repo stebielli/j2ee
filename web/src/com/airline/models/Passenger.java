@@ -12,6 +12,14 @@ public class Passenger {
 
 	private Gender gender;
 
+	public Passenger(String firstName, String lastName, Date birthDate, Gender gender) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.birthDate = birthDate;
+		this.gender = gender;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
