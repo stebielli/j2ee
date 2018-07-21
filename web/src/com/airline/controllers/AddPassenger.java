@@ -25,6 +25,10 @@ import com.airline.models.Passenger;
 @WebServlet("/AddPassenger")
 public class AddPassenger extends HttpServlet {
 
+	private static final long serialVersionUID = -4662803158420918553L;
+
+	private static final Logger logger = LoggerFactory.getLogger(AddPassenger.class);
+
 	private static final String GENDER_ERROR = "gender_error";
 
 	private static final String BIRTHDATE_ERROR = "birthdate_error";
@@ -34,10 +38,6 @@ public class AddPassenger extends HttpServlet {
 	private static final String FIRST_NAME_ERROR = "first_name_error";
 
 	private static final String ERRORS = "errors";
-
-	private static final long serialVersionUID = -4662803158420918553L;
-
-	private static final Logger logger = LoggerFactory.getLogger(AddPassenger.class);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -69,14 +69,13 @@ public class AddPassenger extends HttpServlet {
 			request.setAttribute(LAST_NAME_ERROR, true);
 		}
 
-		Date birthDate;
+		Date birthDate = null;
 		try {
 			birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("dob"));
 		} catch (ParseException e) {
 			logger.error("error parsing birthday", e);
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(BIRTHDATE_ERROR, true);
-			return;
 		}
 
 		String genderStr = request.getParameter("gender");
