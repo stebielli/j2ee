@@ -1,6 +1,7 @@
 package com.airline.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -31,8 +32,11 @@ public class MainPage extends HttpServlet {
 			@SuppressWarnings("unchecked")
 			List<Passenger> passengers = (List<Passenger>) this.getServletContext().getAttribute("passengers");
 			response.setContentType("text/html");
-			response.getWriter().append("Passenger has been added to the list: " + passengers.get(0));
-
+			PrintWriter writer = response.getWriter();
+			writer.append("Passengers: <br>");
+			for (Passenger passenger : passengers) {
+				writer.append(passenger + "<br>");
+			}
 		} catch (IOException e) {
 			logger.error("something wrong printing passengers", e);
 		}

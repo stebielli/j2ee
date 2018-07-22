@@ -101,10 +101,12 @@ public class AddPassenger extends HttpServlet {
 
 		Passenger passenger = new Passenger(firstName, lastName, birthDate, gender);
 
-		@SuppressWarnings("unchecked")
-		List<Passenger> passengers = (List<Passenger>) this.getServletContext().getAttribute("passengers");
-		passengers.add(passenger);
-		logger.info("added new passenger: {}", passenger);
+		synchronized (this) {
+			@SuppressWarnings("unchecked")
+			List<Passenger> passengers = (List<Passenger>) this.getServletContext().getAttribute("passengers");
+			passengers.add(passenger);
+			logger.info("added new passenger: {}", passenger);
+		}
 
 		try {
 			response.sendRedirect("");
