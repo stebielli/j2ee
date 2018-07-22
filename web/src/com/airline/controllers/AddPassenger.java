@@ -39,14 +39,17 @@ public class AddPassenger extends HttpServlet {
 
 	private static final String ERRORS = "errors";
 
+	private static final String ADD_PASSENGER_JSP = "WEB-INF/views/add_passenger.jsp";
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/add_passenger.jsp");
+			RequestDispatcher view = request.getRequestDispatcher(ADD_PASSENGER_JSP);
 			view.forward(request, response);
 		} catch (ServletException | IOException e) {
 			logger.error("somethig wrong forwarding the page", e);
+			return;
 		}
 	}
 
@@ -85,6 +88,15 @@ public class AddPassenger extends HttpServlet {
 			request.setAttribute(GENDER_ERROR, true);
 		}
 		Gender gender = Gender.valueOf(genderStr.toUpperCase());
+
+		if ((boolean) request.getAttribute(ERRORS)) {
+			try {
+				request.getRequestDispatcher(ADD_PASSENGER_JSP).forward(request, response);
+				return;
+			} catch (ServletException | IOException e) {
+				logger.error("somethig wrong forwarding the page", e);
+			}
+		}
 
 		Passenger passenger = new Passenger(firstName, lastName, birthDate, gender);
 		logger.info("created new passenger: {}", passenger);
