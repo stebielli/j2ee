@@ -101,6 +101,11 @@ public class AddPassenger extends HttpServlet {
 		Passenger passenger = new Passenger(firstName, lastName, birthDate, gender);
 		logger.info("created new passenger: {}", passenger);
 
+		try {
+		response.sendRedirect("");
+		} catch (IOException e) {
+			logger.error("somethig wrong redirecting to main page", e);
+		}
 	}
 
 }
