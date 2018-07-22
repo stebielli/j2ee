@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -60,14 +61,14 @@ public class AddPassenger extends HttpServlet {
 
 		String firstName = request.getParameter("first-name");
 		if (StringUtils.isBlank(firstName)) {
-			logger.error("{}", "error parsing first name");
+			logger.error("error parsing first name");
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(FIRST_NAME_ERROR, true);
 		}
 
 		String lastName = request.getParameter("last-name");
 		if (StringUtils.isBlank(firstName)) {
-			logger.error("{}", "error parsing last name");
+			logger.error("error parsing last name");
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(LAST_NAME_ERROR, true);
 		}
@@ -83,7 +84,7 @@ public class AddPassenger extends HttpServlet {
 
 		String genderStr = request.getParameter("gender");
 		if (StringUtils.isBlank(firstName)) {
-			logger.error("{}", "error parsing gender");
+			logger.error("error parsing gender");
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(GENDER_ERROR, true);
 		}
@@ -99,10 +100,14 @@ public class AddPassenger extends HttpServlet {
 		}
 
 		Passenger passenger = new Passenger(firstName, lastName, birthDate, gender);
-		logger.info("created new passenger: {}", passenger);
+
+		@SuppressWarnings("unchecked")
+		List<Passenger> passengers = (List<Passenger>) this.getServletContext().getAttribute("passengers");
+		passengers.add(passenger);
+		logger.info("added new passenger: {}", passenger);
 
 		try {
-		response.sendRedirect("");
+			response.sendRedirect("");
 		} catch (IOException e) {
 			logger.error("somethig wrong redirecting to main page", e);
 		}

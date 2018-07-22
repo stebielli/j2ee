@@ -1,3 +1,6 @@
+# Sonarlint
+.sonarlint/
+
 # Java
 *.class
 *.jar
