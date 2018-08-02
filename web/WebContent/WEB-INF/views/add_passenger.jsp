@@ -44,7 +44,7 @@
 					<%
 						if (request.getAttribute("gender_error") != null) {
 					%>
-					<li class="error">Gender  error</li>
+					<li class="error">Gender error</li>
 					<%
 						}
 					%>
@@ -57,17 +57,20 @@
 				<legend>Passenger details</legend>
 				<div class="inputField">
 					<label for="first-name" class="inputLabel">First name: </label> <input
-						name="first-name" type="text"></input>
+						name="first-name" type="text"
+						value="<%=request.getAttribute("first-name")%>"></input>
 				</div>
 
 				<div class="inputField">
 					<label for="last-name" class="inputLabel">Last name: </label> <input
-						name="last-name" type="text"></input>
+						name="last-name" type="text"
+						value="<%=request.getAttribute("last-name")%>"></input>
 				</div>
 
 				<div class="inputField">
 					<label for="dob" class="inputLabel">Date of birth: </label> <input
-						name="dob" type="text"></input>
+						name="dob" type="text"
+						value="<%=request.getAttribute("dob")%>"></input>
 				</div>
 
 				<div class="inputField">

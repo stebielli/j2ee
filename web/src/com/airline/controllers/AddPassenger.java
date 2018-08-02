@@ -45,12 +45,16 @@ public class AddPassenger extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		request.setAttribute("first-name", "");
+		request.setAttribute("last-name", "");
+		request.setAttribute("dob", "");
+
 		try {
 			RequestDispatcher view = request.getRequestDispatcher(ADD_PASSENGER_JSP);
 			view.forward(request, response);
 		} catch (ServletException | IOException e) {
 			logger.error("somethig wrong forwarding the page", e);
-			return;
 		}
 	}
 
@@ -64,13 +68,20 @@ public class AddPassenger extends HttpServlet {
 			logger.error("error parsing first name");
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(FIRST_NAME_ERROR, true);
+			request.setAttribute("first-name", "");
+		} else {
+			request.setAttribute("first-name", firstName);
 		}
 
 		String lastName = request.getParameter("last-name");
-		if (StringUtils.isBlank(firstName)) {
+		if (StringUtils.isBlank(lastName)) {
 			logger.error("error parsing last name");
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(LAST_NAME_ERROR, true);
+			request.setAttribute("last-name", "");
+		} else {
+			request.setAttribute("last-name", lastName);
+
 		}
 
 		Date birthDate = null;
@@ -80,13 +91,17 @@ public class AddPassenger extends HttpServlet {
 			logger.error("error parsing birthday", e);
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(BIRTHDATE_ERROR, true);
+			request.setAttribute("dob", "");
 		}
+		request.setAttribute("dob", request.getParameter("dob"));
 
 		String genderStr = request.getParameter("gender");
-		if (StringUtils.isBlank(firstName)) {
+		if (StringUtils.isBlank(genderStr)) {
 			logger.error("error parsing gender");
 			request.setAttribute(ERRORS, true);
 			request.setAttribute(GENDER_ERROR, true);
+		} else {
+			request.setAttribute("gender", genderStr);
 		}
 		Gender gender = Gender.valueOf(genderStr.toUpperCase());
 
@@ -105,8 +120,8 @@ public class AddPassenger extends HttpServlet {
 			@SuppressWarnings("unchecked")
 			List<Passenger> passengers = (List<Passenger>) this.getServletContext().getAttribute("passengers");
 			passengers.add(passenger);
-			logger.info("added new passenger: {}", passenger);
 		}
+		logger.info("added new passenger: {}", passenger);
 
 		try {
 			response.sendRedirect("");
